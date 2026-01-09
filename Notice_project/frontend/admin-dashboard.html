@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Campus Chronicle - Admin Dashboard</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header style="background: #000000; color: #ffffff;">
+    <div class="container">
+      <div class="header-content">
+        <div class="logo">
+          <h1 style="color: white;"> Admin Panel</h1>
+          <p style="color: rgba(255,255,255,0.8);">Manage College Notices</p>
+        </div>
+        <div class="header-nav">
+          <span id="userName" style="color: white;"></span>
+          <button class="logout-btn" onclick="logout()">Logout</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="container dashboard">
+    <div class="dashboard-section">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+        <button class="btn btn-primary" onclick="openAddModal()" style="padding: 12px 24px; font-size: 16px;">+ Add New Notice</button>
+      </div>
+
+      <div class="filters">
+        <div class="filter-group">
+          <label for="facultyFilter">Faculty:</label>
+          <select id="facultyFilter">
+            <option value="All">All Faculties</option>
+            <option value="All">All</option>
+            <option value="Computer Science">Computer Science</option>
+            <option value="Electronics">Electronics</option>
+            <option value="Mechanical">Mechanical</option>
+            <option value="Civil">Civil</option>
+            <option value="Electrical">Electrical</option>
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <label for="semesterFilter">Semester:</label>
+          <select id="semesterFilter">
+            <option value="All">All Semesters</option>
+            <option value="All">All</option>
+            <option value="1st">1st</option>
+            <option value="2nd">2nd</option>
+            <option value="3rd">3rd</option>
+            <option value="4th">4th</option>
+            <option value="5th">5th</option>
+            <option value="6th">6th</option>
+            <option value="7th">7th</option>
+            <option value="8th">8th</option>
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <label for="categoryFilter">Category:</label>
+          <select id="categoryFilter">
+            <option value="All">All Categories</option>
+            <option value="Exam">Exam</option>
+            <option value="Event">Event</option>
+            <option value="Announcement">Announcement</option>
+            <option value="Holiday">Holiday</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="notices-grid" id="noticesGrid"></div>
+      <div class="empty-state" id="emptyState" style="display: none;">
+        <h3>No notices yet</h3>
+        <p>Click "Add New Notice" to create your first notice</p>
+      </div>
+    </div>
+  </main>
+
+  <!-- Add/Edit Notice Modal -->
+  <div class="modal" id="noticeModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 id="modalTitle">Add New Notice</h2>
+        <button class="close-btn" onclick="closeModal('noticeModal')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form id="noticeForm">
+          <div class="form-group">
+            <label for="noticeTitle">Title:</label>
+            <input 
+              type="text" 
+              id="noticeTitle" 
+              placeholder="Notice title" 
+              required
+            >
+          </div>
+
+          <div class="form-group">
+            <label for="noticeContent">Content:</label>
+            <textarea 
+              id="noticeContent" 
+              placeholder="Notice content" 
+              required
+            ></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="noticeCategory">Category:</label>
+            <select id="noticeCategory" required>
+              <option value="">Select Category</option>
+              <option value="Exam">Exam</option>
+              <option value="Event">Event</option>
+              <option value="Announcement">Announcement</option>
+              <option value="Holiday">Holiday</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="noticeFaculty">Faculty:</label>
+            <select id="noticeFaculty" required>
+              <option value="">Select Faculty</option>
+              <option value="All">All</option>
+              <option value="Computer Science">Computer Science</option>
+              <option value="Electronics">Electronics</option>
+              <option value="Mechanical">Mechanical</option>
+              <option value="Civil">Civil</option>
+              <option value="Electrical">Electrical</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="noticeSemester">Semester:</label>
+            <select id="noticeSemester" required>
+              <option value="">Select Semester</option>
+              <option value="All">All</option>
+              <option value="1st">1st</option>
+              <option value="2nd">2nd</option>
+              <option value="3rd">3rd</option>
+              <option value="4th">4th</option>
+              <option value="5th">5th</option>
+              <option value="6th">6th</option>
+              <option value="7th">7th</option>
+              <option value="8th">8th</option>
+            </select>
+          </div>
+
+          <div style="display: flex; gap: 10px; justify-content: flex-end;">
+            <button type="button" class="btn btn-secondary" onclick="closeModal('noticeModal')">Cancel</button>
+            <button type="submit" class="btn btn-primary">Save Notice</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- View Notice Modal -->
+  <div class="modal" id="viewModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 id="viewModalTitle"></h2>
+        <button class="close-btn" onclick="closeModal('viewModal')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div id="viewModalBody"></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/auth.js"></script>
+  <script src="js/admin.js"></script>
+</body>
+</html>
