@@ -201,6 +201,7 @@ header {
   display: flex;
   align-items: center;
   gap: 10px;
+  margin-left: -340px;
 }
 
 .logo h1 {
@@ -217,6 +218,7 @@ header {
   display: flex;
   gap: 20px;
   align-items: center;
+  margin-right: -340px;
 }
 
 .header-nav button {
@@ -239,7 +241,7 @@ header {
 
 /* Dashboard */
 .dashboard {
-  padding: 30px 0;
+  padding: 5px 0;
 }
 
 .dashboard-section {
