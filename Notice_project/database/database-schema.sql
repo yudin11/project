@@ -1,7 +1,7 @@
 -- Campus Chronicle Database Schema
 
 -- Create Database
-CREATE DATABASE IF NOT EXISTS `campus_chronicle`;
+CREATE DATABASE IF NOT EXISTS `HCOE`;
 USE `campus_chronicle`;
 
 -- Students Table
