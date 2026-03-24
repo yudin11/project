@@ -2,7 +2,7 @@
 
 -- Create Database
 CREATE DATABASE IF NOT EXISTS `HCOE`;
-USE `campus_chronicle`;
+USE `HCOE`;
 
 -- Students Table
 CREATE TABLE `students` (
