@@ -1,4 +1,4 @@
--- Campus Chronicle Database Schema
+-- HCOE Database Schema
 
 -- Create Database
 CREATE DATABASE IF NOT EXISTS `HCOE`;
