@@ -1,0 +1,85 @@
+================================================================================
+APPENDIX — KEY SOURCE EXCERPTS (abbreviated)
+HCOE Notice Board System — full code in project folders
+================================================================================
+
+--- backend/config.php (essentials) ---
+$conn = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
+function sendJSON($data) { header('Content-Type: application/json'); echo json_encode($data); exit; }
+
+
+--- backend/login.php (essentials) ---
+$stmt = $conn->prepare("SELECT ... FROM $table WHERE user_id = ?");
+$stmt->bind_param('s', $userId);
+// ...
+if (!password_verify($password, $user['password'])) {
+    sendJSON(['success' => false, 'message' => 'Invalid password']);
+}
+sendJSON(['success' => true, 'user' => [...], 'token' => generateToken(...)]);
+
+
+--- backend/get-notices.php (essentials) ---
+$sql = "SELECT id, title, content, category, faculty, semester, created_at AS date
+        FROM notices ORDER BY created_at DESC";
+// loop fetch_assoc → JSON { success, notices }
+
+
+--- backend/manage-notices.php (essentials) ---
+// JSON body: method = CREATE | UPDATE | DELETE
+// CREATE: INSERT INTO notices (title, content, category, faculty, semester) VALUES (?,?,?,?,?)
+// UPDATE: UPDATE notices SET ... WHERE id = ?
+// DELETE: DELETE FROM notices WHERE id = ?
+// Uses htmlspecialchars() on text fields; prepared statements.
+
+
+--- backend/cleanup-notices.php (essentials) ---
+DELETE FROM notices WHERE created_at < (NOW() - INTERVAL 100 DAY);
+
+
+--- frontend/js/auth.js (essentials) ---
+function checkAuth(requiredRole) {
+  const userData = JSON.parse(localStorage.getItem('user'));
+  if (!userData || userData.userType !== requiredRole) window.location.href = 'index.html';
+}
+function setAuthData(user, token) {
+  localStorage.setItem('user', JSON.stringify(user));
+  localStorage.setItem('authToken', token);
+}
+
+
+--- frontend/js/index.js (essentials) ---
+fetch('../backend/login.php', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({ userType, userId, password })
+}).then(r => r.json()).then(data => {
+  if (data.success) { setAuthData(data.user, data.token);
+    location.href = userType === 'student' ? 'student-dashboard.html' : 'admin-dashboard.html';
+  }
+});
+
+
+--- frontend/js/student.js & admin.js (essentials) ---
+// Load list
+fetch('../backend/get-notices.php').then(r => r.json()).then(data => { allNotices = data.notices; displayNotices(); });
+
+// Student: filter by category / faculty / semester, then render cards.
+
+// Admin: save (create/update)
+fetch('../backend/manage-notices.php', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({ method: 'CREATE'|'UPDATE', id, title, content, category, faculty, semester })
+});
+
+// Admin: delete
+fetch('../backend/manage-notices.php', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({ method: 'DELETE', id })
+});
+
+
+--- NOT IN THIS FILE ---
+frontend/*.html, css/style.css, full PHP/JS — see Notice_project source tree.
+================================================================================
